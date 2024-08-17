@@ -6,7 +6,7 @@ const port = 7700;
 
 // Enable CORS with options
 app.use(cors({
-  origin: 'https://your-frontend-domain.com', // Replace with your frontend domain or use '*' to allow all
+  origin: '*', // Replace with your frontend domain or use '*' to allow all
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true, // Set to true if your frontend sends credentials (cookies, HTTP authentication)
   allowedHeaders: ['Content-Type', 'Authorization']
