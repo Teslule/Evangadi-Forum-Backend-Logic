@@ -1,52 +1,54 @@
-require("dotenv").config();
-const cors = require("cors");
-const express = require("express");
+require('dotenv').config();
+const cors = require('cors');
+const express = require('express');
 const app = express();
 const port = 7700;
 
-// Use CORS to allow all origins
-app.use(cors({ origin: "*" }));
+// Enable CORS with options
+app.use(cors({
+  origin: 'https://your-frontend-domain.com', // Replace with your frontend domain or use '*' to allow all
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true, // Set to true if your frontend sends credentials (cookies, HTTP authentication)
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
 // Database connection
-const dbConnection = require("./db/dbConfig");
-
+const dbConnection = require('./db/dbConfig');
 // User routes middleware file
-const userRoutes = require("./routes/userRoute");
-
+const userRoutes = require('./routes/userRoute');
 // Question routes middleware file
-const questionRoutes = require("./routes/questionRoute");
-
+const questionRoutes = require('./routes/questionRoute');
 // Answer routes middleware file
-const answerRoutes = require("./routes/answerRoute");
-
+const answerRoutes = require('./routes/answerRoute');
 // Authentication middleware
-const authMiddleware = require("./middleware/authMiddleware");
-
-const { createTables } = require("./db/database");
+const authMiddleware = require('./middleware/authMiddleware');
+const { createTables } = require('./db/database');
 
 // Routes with authentication middleware
-app.use("/api/questions", authMiddleware, questionRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/answers", authMiddleware, answerRoutes);
+app.use('/api/questions', authMiddleware, questionRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/answers', authMiddleware, answerRoutes);
 
 // Start server with database connection
 async function start() {
   try {
-    await dbConnection.execute("SELECT 'test'");
+    await dbConnection.execute('SELECT \'test\'');
     createTables();
     app.listen(port, () => {
       console.log("Database connection established");
       console.log(`Listening on port ${port}`);
     });
   } catch (error) {
-    console.error("Failed to establish database connection:", error.message);
+    console.error('Failed to establish database connection:', error.message);
   }
 }
-
 start();
+
+
+
 
 // require("dotenv").config();
 // const cors = require("cors");
